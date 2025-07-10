@@ -6,7 +6,7 @@ paths:
   /inventory:
     get:
       summary: Read Inventory
-      description: Uses the get_inventory funciton frominventory.py to return the
+      description: Uses the get_inventory funciton from inventory.py to return the
         current inventory.
       operationId: read_inventory_inventory_get
       responses:
@@ -17,6 +17,8 @@ paths:
               schema: {}
     post:
       summary: Modify Inventory
+      description: Uses updater_inventory function to make changes to the inventory
+        data
       operationId: modify_inventory_inventory_post
       requestBody:
         content:
