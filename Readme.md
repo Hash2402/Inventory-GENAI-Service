@@ -34,6 +34,45 @@ root/
 ├── start_all.bat                       # Bonus: Script to run all components in new terminal tabs
 └── README.md                           # Documentation and setup instructions
 ```
+### inventory-service/
+Backend REST API to manage inventory for tshirts and pants.
+| File               | Description                                                                            |
+| ------------------ | -------------------------------------------------------------------------------------- |
+| `main.py`          | FastAPI application that exposes `GET` and `POST` endpoints for inventory.             |
+| `inventory.py`     | Contains business logic to load, update, and persist inventory using `inventory.json`. |
+| `models.py`        | Defines the request schema using `Pydantic` to validate `POST /inventory` input.       |
+| `inventory.json`   | Stores current inventory count in JSON format. Auto-saved on updates.                  |
+| `requirements.txt` | Lists all Python dependencies needed to run this service.                              |
+
+### mcp-server/
+Model Control Plane (MCP) server. Accepts natural language and interacts with the inventory API using LLM.
+| File                  | Description                                                                                     |
+| --------------------- | ----------------------------------------------------------------------------------------------- |
+| `main.py`             | FastAPI app that parses user queries and routes them as actions (GET/POST) to the inventory.    |
+| `utils.py`            | Handles OpenRouter LLM calls to convert natural language into structured JSON actions.          |
+| `inventory_client.py` | Contains async HTTP functions to call the inventory service's endpoints.                        |
+| `prompts.py`          | System prompt + examples used to guide the LLM in formatting responses.                         |
+| `.env`                | Stores sensitive OpenRouter API key and model name (e.g., `mistral-small`). Not tracked by Git. |
+| `requirements.txt`    | Lists dependencies like `fastapi`, `httpx`, `python-dotenv`, etc.                               |
+### mcp-client/ (Optional CLI)
+Simple command-line interface to talk to the MCP server.
+| File     | Description                                                                                                  |
+| -------- | ------------------------------------------------------------------------------------------------------------ |
+| `cli.py` | Takes natural language input from user and sends it to MCP (`localhost:8001/mcp`) and displays the response. |
+
+### openapi.yaml
+
+Defines the OpenAPI spec of the inventory service. Helps LLMs understand valid endpoints and data formats.
+
+### start_all.bat (Bonus)
+Batch script to run the entire system (inventory service, MCP server, and client) with one click on Windows.
+
+| Step | Action                                                   |
+| ---- | -------------------------------------------------------- |
+| 1️  | Opens inventory service in new CMD window on port `8000` |
+| 2️  | Opens MCP server in new CMD window on port `8001`        |
+| 3️  | Opens MCP CLI in third CMD window                        |
+
 ---
 ## System Design
 
@@ -284,5 +323,81 @@ Run all services in one go by clicking on start_all.bat (WINDOWS OS)
 
 * Expand GenAI prompt logic using LangChain or structured output parsers
 ---
+## Experimentation & Design Decisions
+Throughout this project, I explored different approaches and made thoughtful decisions to balance functionality, simplicity, and learning. Here’s a breakdown of the key experiments, challenges, and choices I made along the way:
+
+### 1. Tech Stack Choices
+| Component       | Choice                         | Reasoning                                                                                                                                                                                |
+| --------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Web Framework   | **FastAPI**                    | Chosen for its speed, automatic OpenAPI docs generation, and async support. Although Flask was considered, FastAPI provided built-in validation and better type hinting with `Pydantic`. |
+| LLM Integration | **OpenRouter API**             | Selected for free-tier access to multiple models and OpenAI-compatible API.                                                                                                              |
+| Data Store      | **JSON File (inventory.json)** | Used simple persistent storage via a file to avoid DB setup; enough for a small-scale system and prototyping.                                                                            |
+| HTTP Client     | **httpx (async)**              | Used for making asynchronous HTTP calls between MCP server and Inventory service.                                                                                                        |
+| Language Model  | **Mistral-7B via OpenRouter**  | Initial attempts with Gemma failed due to developer instruction issues; switched to a Mistral model known for better instruction-following capability.                                   |
+
+----
+### 2. Development Process & Experimentation
+### Inventory Service
++ Initial Version: Started with in-memory dictionary (inventory_data).
+
++ Persistence Experiment: Noticed that data resets on server restart. Switched to JSON-based file persistence.
+
++ Improved Error Handling: Prevented negative inventory by checking for underflow.
+
++ OpenAPI Spec: Initially skipped, later added openapi.yaml for better integration with GenAI prompting.
+
++ Fallback Mechanism: If inventory.json is missing, it defaults to a hardcoded fallback.
+
+#### MCP Server
+* Prompt Parsing: Faced challenges in parsing raw LLM output (extra Markdown code blocks). Implemented stripping of triple backticks and json block markers.
+
+* LLM Switching: Switched from gemma to mistral-small after discovering support issues and malformed outputs.
+
+* Robust Validation: Added checks for valid keys (item, change) and data types to catch LLM hallucinations or misformats.
+
+* Error Trace Debugging: Tracked HTTP 400s to invalid change data types (str instead of int) and refined input handling.
+----
+#### 3. Tooling Decisions
+* Environment Variables: .env used to safely manage API keys and models.
+
+* Batch Automation: start_all.bat created to run Inventory, MCP server, and CLI in parallel for ease of testing.
+
+* Postman Testing: Preferred over curl for better visualization and ease during JSON request testing.
+----
+ ### 4. Test Case Trials
+
+| Scenario                          | Observation                           | Fix                                                |
+| --------------------------------- | ------------------------------------- | -------------------------------------------------- |
+| Selling more than available stock | Allowed initially, causing negatives  | Added validation to block it                       |
+| Missing fields in LLM response    | Crashed server                        | Added validation for field presence and type       |
+| LLM returning invalid JSON format | Caused JSON decode errors             | Added cleaning logic for Markdown code blocks      |
+| No `.json` file at startup        | Inventory wiped                       | Added check to load defaults if file doesn't exist |
+| Persistent storage not updating   | Was initially only saving on shutdown | Changed to write immediately after POST            |
+
+----
+ ### 5. Bonus Experiments
+* CLI Client (mcp-client/cli.py): Built a simple terminal-based interactive client using input() for quick queries to MCP.
+
+* Prompt Engineering: Customized prompts.py to support  edge cases like "show me total stock of shoes".
+
+* OpenAPI-Aided Prompting: Used openapi.yaml to ground LLM outputs into correct schema actions.
+
+---
+
+## Key Learnings
++ LLMs can hallucinate or misformat responses, so always validate inputs.
+
++ OpenAPI docs aren’t just for Swagger—they help guide GenAI to respond in expected formats.
+
++ Persistent storage is crucial, even in small-scale apps, especially when testing state.
+
++ Developer experience matters — start_all.bat saves significant manual setup time.
+---
 ## Conclusion
-This project combines REST APIs, file-based persistence, and GenAI-powered logic control through a clean and modular design. It showcases backend fundamentals and AI integration through OpenRouter and OpenAPI prompting.
+This project was a great opportunity to blend traditional backend skills with the exciting capabilities of generative AI. From designing clean APIs and managing state with file-based persistence, to integrating OpenRouter for natural language understanding — each part pushed me to think like both an engineer and a product builder.
+
+Along the way, I explored prompt design, experimented with LLM models, and made decisions that kept the system simple, modular, and extensible.
+
+More than just completing a task, this was about building something usable and learning how modern AI can interact with real-world systems.
+
+Thanks for reading — and happy hacking!
