@@ -1,5 +1,11 @@
 import requests
 
+def format_inventory(inv: dict) -> str:
+    """Return a human‑readable string from the inventory dict."""
+    shirts = inv.get("tshirts", "‑")
+    pants  = inv.get("pants",  "‑")
+    return f"{shirts} t‑shirts and {pants} pants"
+
 def main():
     print("Welcome to the Inventory Assistant!")
     print("Type 'exit' to quit.\n")
@@ -10,20 +16,25 @@ def main():
             print("Goodbye!")
             break
 
-        # Send user's message to MCP server for processing
         response = requests.post(
-            "http://localhost:8001/mcp",  # MCP server URL
+            "http://localhost:8001/mcp",
             json={"message": user_input}
         )
 
         if response.status_code == 200:
             data = response.json()
-            # Print the action MCP interpreted and the inventory state
-            print(" Action:", data.get("action"))
-            print(" Inventory:", data.get("response"))
+            action = data.get("action")
+            inventory = data.get("response", {})
+
+            if action == "GET":
+                print("Assistant: Here’s your current stock →", format_inventory(inventory))
+            elif action == "POST":
+                print("Assistant: Update successful! New inventory →", format_inventory(inventory))
+            else:
+                # Fallback if MCP ever returns a different action
+                print("Assistant:", data)
         else:
-            # Print error message if MCP server returns error
-            print(" Error:", response.json().get("detail"))
+            print("Assistant (error):", response.json().get("detail"))
 
 if __name__ == "__main__":
     main()
