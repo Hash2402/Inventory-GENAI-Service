@@ -1,13 +1,32 @@
 import requests
 import yaml
 
-def export_openapi_yaml(url="http://localhost:8000/openapi.json", filename="openapi.yaml"):
-    response = requests.get(url)
-    response.raise_for_status()
-    openapi_json = response.json()
-    with open(filename, "w") as f:
-        yaml.dump(openapi_json, f, sort_keys=False)
-    print(f"OpenAPI spec saved to {filename}")
+# URL of the running FastAPI Inventory Service's OpenAPI spec
+OPENAPI_URL = "http://localhost:8000/openapi.json"
 
+# Path where the YAML version will be saved
+OUTPUT_FILE = "openapi.yaml"
+
+def export_openapi_spec():
+    try:
+        # Fetch OpenAPI JSON from the running server
+        response = requests.get(OPENAPI_URL)
+        response.raise_for_status()  # Raise exception if request failed
+
+        # Parse the JSON response
+        openapi_json = response.json()
+
+        # Convert to YAML format
+        openapi_yaml = yaml.dump(openapi_json, sort_keys=False)
+
+        # Write to file
+        with open(OUTPUT_FILE, "w") as f:
+            f.write(openapi_yaml)
+
+        print(f"OpenAPI spec exported to {OUTPUT_FILE}")
+    except Exception as e:
+        print(f"Failed to export OpenAPI spec: {e}")
+
+# Run the function when script is executed
 if __name__ == "__main__":
-    export_openapi_yaml()
+    export_openapi_spec()
