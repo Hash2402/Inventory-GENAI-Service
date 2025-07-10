@@ -93,7 +93,7 @@ Body: { "message": "I sold 3 pants" }
 | `I sold 3 tshirts`                     | POST `/inventory` with `change: -3` |
 | `Add 5 pants`                          | POST `/inventory` with `change: +5` |
 | `How many pants and shirts do I have?` | GET `/inventory`                    |
-| `I bought 2 pants and 1 tshirt`        | Multiple POSTs to update both items |
+
 
 
 
