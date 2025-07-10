@@ -1,0 +1,50 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment folders
+venv/
+env/
+.venv/
+
+# Environment variable and secret files
+*.env
+.env
+mcp-server/.env
+
+# Editor/IDE config
+.vscode/
+.idea/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Log files
+*.log
+
+# Inventory data (exclude if only runtime, include if pre-seeded)
+inventory-service/inventory.json
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+
+# Unit test / type checking cache
+.mypy_cache/
+.pytest_cache/
+
+# pip wheel cache
+pip-wheel-metadata/
+
+# Bash or batch backup files
+*.bat~
+*.sh~
+
+# Optional: CLI compiled cache
+mcp-client/__pycache__/
