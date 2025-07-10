@@ -64,6 +64,8 @@ root/
 
 + Swagger/OpenAPI docs: http://localhost:8000/docs
 
+![Screenshot 2025-07-09 224123](https://github.com/user-attachments/assets/f6547e53-dec1-4256-98b7-380e58d32d72)
+
 ### 2. MCP Server (Model Control Plane)
 #### ➤ Navigate to folder:
 ```cd mcp-server```
@@ -79,13 +81,16 @@ MODEL=mistralai/mistral-small-3.2-24b-instruct:free
 #### ➤ Run the server:
 ```uvicorn main:app --reload --port 8001```
 
+![Screenshot 2025-07-09 225403](https://github.com/user-attachments/assets/39eb83cd-5464-4d1e-bb35-19ea52df30c4)
+
+
 #### ➤ MCP API Endpoint:
 ```
 POST http://localhost:8001/mcp
 Content-Type: application/json
 Body: { "message": "I sold 3 pants" }
 ````
-
+---
 ##  Example Natural Language Inputs
 
 | Input Message                          | Action Taken                        |
@@ -94,9 +99,86 @@ Body: { "message": "I sold 3 pants" }
 | `Add 5 pants`                          | POST `/inventory` with `change: +5` |
 | `How many pants and shirts do I have?` | GET `/inventory`                    |
 
+---
+## Testing Using Postman
+#### You can easily test the Inventory Service and MCP Server APIs using Postman by following these steps:
 
+#### 1. Testing Inventory Service
+#### Get current inventory
+```
+Method: GET
+```
+```
+URL: http://localhost:8000/inventory
+```
 
+   * Click Send
 
+   * You should see JSON response with current counts, e.g.:
+```
+{
+  "tshirts": 20,
+  "pants": 19
+}
+```
+![Screenshot 2025-07-09 224220](https://github.com/user-attachments/assets/963f6d2b-0673-482f-b5bc-5710424428a8)
+
+####  Modify inventory
+```
+Method: POST
+```
+```
+URL: http://localhost:8000/inventory
+```
+```
+Body (raw, JSON):
+{
+  "item": "tshirts",
+  "change": -5
+}
+```
+* Click Send
+
+* The response shows updated inventory counts.
+  
+  ![Screenshot 2025-07-09 224341](https://github.com/user-attachments/assets/022b4269-8e4f-46a9-a46a-d70193f2602e)
+
+## 2. Testing MCP Server
+#### Send a natural language query
+```
+Method: POST
+```
+```
+URL: http://localhost:8001/mcp
+```
+```
+Body (raw, JSON):
+{
+  "message": "How many pants and shirts do I have?"
+
+}
+```
+* Click Send
+
+* The response will show interpreted action and updated inventory, for example:
+```
+{
+  "action": "GET",
+  "response": {
+    "tshirts": 15,
+    "pants": 19
+  }
+}
+```
+![Screenshot 2025-07-09 224607](https://github.com/user-attachments/assets/5e0a679c-9559-47a7-bc7e-9de80141cc1d)
+
+#### Try other natural language commands, such as:
+```
+"Add 5 tshirts"
+```
+
+![Screenshot 2025-07-09 224646](https://github.com/user-attachments/assets/8645218e-296c-412a-be9a-32fec00dac93)
+---
 ## Bonus: CLI Client + Batch Script
 ### mcp-client/cli.py
 
@@ -108,6 +190,8 @@ python cli.py
 ```
 ---
 
+![Screenshot 2025-07-09 230310](https://github.com/user-attachments/assets/c2a9d2b2-2fd0-4602-8649-0b376d0339fa)
+
 ### start_all.bat
 Run all services in one go by clicking on start_all.bat (WINDOWS OS)
 
@@ -117,6 +201,9 @@ Run all services in one go by clicking on start_all.bat (WINDOWS OS)
 + MCP service (port 8001)
 
 + MCP CLI in third window
+
+  ![Screenshot 2025-07-09 224850](https://github.com/user-attachments/assets/c45f52d8-2a65-4bff-818c-585c5184da49)
+
 ---
 
 ##  OpenAPI Integration
@@ -151,7 +238,7 @@ Run all services in one go by clicking on start_all.bat (WINDOWS OS)
 * GenAI responses depend on LLM prompt tuning and API model availability
 ---
 ##  Future Improvements
-* Add SKU-based inventory with item metadata
+* Develop a clean and User Freindly dashborad for ease of access
 
 * Migrate to SQLite/PostgreSQL for persistence
 
