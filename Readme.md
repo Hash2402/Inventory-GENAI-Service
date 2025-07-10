@@ -35,7 +35,45 @@ root/
 └── README.md                           # Documentation and setup instructions
 ```
 ---
+## System Design
 
+![Screenshot 2025-07-09 232747](https://github.com/user-attachments/assets/44428229-bd9a-4397-b520-b6f92165348f)
+
+### Component Responsibilities
+| Component             | Description                                                                                                     |
+| --------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Inventory Service** | Manages inventory state, exposes `/inventory` GET/POST APIs. Persists data to `inventory.json`.                 |
+| **MCP Server**        | Receives user messages, uses OpenRouter LLM to convert input into structured actions, then calls Inventory API. |
+| **MCP Client (CLI)**  | Optional. A simple terminal-based interface to talk to MCP Server.                                              |
+
+### Interaction Flow
+#### Example:
+1. User says: “I sold 2 pants”  
+
+2. MCP Client sends this message to MCP Server.  
+
+3. MCP Server uses LLM (via OpenRouter) to convert it to:  
+   
+```
+{ 
+"action": "POST",
+ "request":
+  {
+    "item": "pants",
+    "change": -2
+  }
+}
+```  
+
+4. MCP Server sends this to Inventory Service's /inventory endpoint.  
+
+5. Inventory Service checks if the transaction is possible and updates the inventory
+
+6. Inventory Service responds with the new state.  
+
+7. MCP returns this state to user.  
+
+---
 ##  Setup Instructions
 
 ###  Prerequisites
