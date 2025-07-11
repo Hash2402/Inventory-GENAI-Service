@@ -451,6 +451,6 @@ Thanks for reading !
 
 ## Youtube
 Here’s the YouTube video where you can watch a complete walkthrough of the installation steps and a live demo of the project in action.
-
+The video is unlisted and Only people with the yotube link can view the video
 .
 
