@@ -299,7 +299,15 @@ python cli.py
 ![Screenshot 2025-07-09 230310](https://github.com/user-attachments/assets/c2a9d2b2-2fd0-4602-8649-0b376d0339fa)
 
 ### start_all.bat
-Run all services in one go by clicking on start_all.bat (WINDOWS OS)
+Run all services in one go by clicking on start_all.bat (WINDOWS OS)   
+
+### start_all.sh
+Run all services in one go by clicking on start_all.sh (MAC OS)   
+
+--- 
+Make sure to install root/requirements.txt beforehand to ensure everything runs smoothly.    
+
+```pip install -r requirements.txt```   
 
 #### It launches:
 + Inventory service (port 8000)
