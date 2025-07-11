@@ -22,6 +22,7 @@
 + [Experimentation & Design Decisions](#experimentation--design-decisions)
 + [Key Learnings](#key-learnings)
 + [Conclusion](#conclusion)
++ [YouTube (Demo Video)](#youtube)
   
 Note: Skip ahead to the Setup Instructions section [Setup Instructions](#setup-instructions) for a quick walkthrough of the demo setup.
 
@@ -447,3 +448,9 @@ Along the way, I explored prompt design, experimented with LLM models, and made 
 More than just completing a task, this was about delivering something functional and demonstrating how modern AI can effectively integrate with real-world systems
 
 Thanks for reading !
+
+## Youtube
+Here’s the YouTube video where you can watch a complete walkthrough of the installation steps and a live demo of the project in action.
+
+.
+
