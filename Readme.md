@@ -101,6 +101,15 @@ Batch script to run the entire system (inventory service, MCP server, and client
 | 2️  | Opens MCP server in new CMD window on port `8001`        |
 | 3️  | Opens MCP CLI in third CMD window                        |
 
+### start_all.sh (Bonus)
+Shell script to run the entire system (inventory service, MCP server, and client) with one click on MAC OS.
+
+| Step | Action                                                   |
+| ---- | -------------------------------------------------------- |
+| 1️  | Opens inventory service in new Terminal on port `8000` |
+| 2️  | Opens MCP server in new Terminalon port `8001`        |
+| 3️  | Opens MCP CLI in third Terminal                        |
+
 ---
 ## System Design
 
@@ -397,7 +406,7 @@ Throughout this project, I explored different approaches and made thoughtful dec
 #### 3. Tooling Decisions
 * Environment Variables: .env used to safely manage API keys and models.
 
-* Batch Automation: start_all.bat created to run Inventory, MCP server, and CLI in parallel for ease of testing.
+* Batch and Shell Automation: start_all.bat and start_all.sh created to run Inventory, MCP server, and CLI in parallel for ease of testing.
 
 * Postman Testing: Preferred over curl for better visualization and ease during JSON request testing.
 ----
