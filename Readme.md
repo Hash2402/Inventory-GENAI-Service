@@ -57,7 +57,9 @@ root/
 │   └── cli.py                          # Command-line interface to interact with MCP
 │
 ├── openapi.yaml                        # OpenAPI schema (used to help LLM format responses)
-├── start_all.bat                       # Bonus: Script to run all components in new terminal tabs
+├── start_all.bat                       # Bonus: Script to run all components in new terminal tabs (WINDOWS)
+├── start_all.sh                        # Bonus: Script to run all components in new terminal tabs (MACOS)
+├── requirements.txt                    # Dependencies of the entire system. Required If you are running start_all files directly.
 └── README.md                           # Documentation and setup instructions
 ```
 ### inventory-service/
