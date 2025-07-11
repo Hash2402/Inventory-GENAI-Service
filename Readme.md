@@ -1,5 +1,30 @@
 # Inventory Management + GenAI Interface
+----
 
+##  Table of Contents
+
++ [Overview](#overview)
++ [Project Structure](#project-structure)
++ [inventory-service/](#inventory-service)
++ [mcp-server/](#mcp-server)
++ [mcp-client/ (Optional CLI)](#mcp-client-optional-cli)
++ [openapi.yaml](#openapiyaml)
++ [start_all.bat (Bonus)](#start_allbat-bonus)
++ [System Design](#system-design)
++ [Setup Instructions](#setup-instructions)
++ [Example Natural Language Inputs](#example-natural-language-inputs)
++ [Testing Using Postman](#testing-using-postman)
++ [Bonus: CLI Client + Batch Script](#bonus-cli-client--batch-script)
++ [OpenAPI Integration](#openapi-integration)
++ [Tech Stack](#tech-stack)
++ [Limitations](#limitations)
++ [Future Improvements](#future-improvements)
++ [Experimentation & Design Decisions](#experimentation--design-decisions)
++ [Key Learnings](#key-learnings)
++ [Conclusion](#conclusion)
+
+
+----
 ## Overview
 
 This project implements an Inventory Management system with two components:
@@ -7,8 +32,7 @@ This project implements an Inventory Management system with two components:
 1. **Inventory Service**: A REST API managing inventory counts of `tshirts` and `pants`.
 2. **MCP Server (Model Control Plane)**: A GenAI-powered interface that interprets natural language commands to interact with the Inventory Service.
 
----
-
+----
 ## Project Structure
 ```
 root/
