@@ -22,8 +22,7 @@
 + [Experimentation & Design Decisions](#experimentation--design-decisions)
 + [Key Learnings](#key-learnings)
 + [Conclusion](#conclusion)
-+ [YouTube (Demo Video)](#youtube)
-  
+
 Note: Skip ahead to the Setup Instructions section [Setup Instructions](#setup-instructions) for a quick walkthrough of the demo setup.
 
 Note : Jump to [Setup Instructions](#setup-instructions) for quickly goung through the demo
@@ -449,8 +448,6 @@ More than just completing a task, this was about delivering something functional
 
 Thanks for reading !
 
-## Youtube
-Here’s the YouTube video where you can watch a complete walkthrough of the installation steps and a live demo of the project in action.
-The video is unlisted and Only people with the yotube link can view the video
-.
+
+
 
