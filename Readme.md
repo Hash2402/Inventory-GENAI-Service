@@ -22,8 +22,10 @@
 + [Experimentation & Design Decisions](#experimentation--design-decisions)
 + [Key Learnings](#key-learnings)
 + [Conclusion](#conclusion)
+  
+Note: Skip ahead to the Setup Instructions section [Setup Instructions](#setup-instructions) for a quick walkthrough of the demo setup.
 
-
+Note : Jump to [Setup Instructions](#setup-instructions) for quickly goung through the demo
 ----
 ## Overview
 
@@ -172,6 +174,7 @@ Batch script to run the entire system (inventory service, MCP server, and client
 ```cd mcp-server```
 
 #### ➤ Add .env file:
+This is a very crucial step and needs to be completed for the servers to run with LLM support.
 ```
 OPENROUTER_API_KEY="YOUR-OPENROUTER-KEY"  
 MODEL=mistralai/mistral-small-3.2-24b-instruct:free
@@ -422,6 +425,6 @@ This project was a great opportunity to blend traditional backend skills with th
 
 Along the way, I explored prompt design, experimented with LLM models, and made decisions that kept the system simple, modular, and extensible.
 
-More than just completing a task, this was about building something usable and learning how modern AI can interact with real-world systems.
+More than just completing a task, this was about delivering something functional and demonstrating how modern AI can effectively integrate with real-world systems
 
-Thanks for reading — and happy hacking!
+Thanks for reading !
