@@ -67,7 +67,7 @@ sleep 2
 
 # Start MCP client in new terminal window
 echo "Starting MCP client in new terminal window..."
-osascript -e "tell application \"Terminal\" to do script \"cd '$SCRIPT_DIR/mcp_client' && $PYTHON_CMD cli.py\""
+osascript -e "tell application \"Terminal\" to do script \"cd '$SCRIPT_DIR/mcp-client' && $PYTHON_CMD cli.py\""
 
 echo "All services started successfully!"
 echo "- Inventory Service: http://localhost:8000"
